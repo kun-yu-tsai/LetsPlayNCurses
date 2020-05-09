@@ -2,6 +2,7 @@
 
 void scanMulti();
 void getStrMulti();
+
 int main(int argc, char const *argv[])
 {
     initscr();
