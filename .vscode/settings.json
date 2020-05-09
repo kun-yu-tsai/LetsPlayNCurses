@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "curses.h": "c",
+        "unistd.h": "c"
+    }
+}
