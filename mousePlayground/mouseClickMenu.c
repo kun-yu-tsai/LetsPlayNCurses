@@ -22,18 +22,11 @@ int main(int argc, char const *argv[])
         OPTION_NUMS
     );
 
-    printw("menu curY = %d, maxY = %d\n", getcury(menu), getmaxy(menu));
-    printw("menu parY = %d, begY = %d\n", getpary(menu), getbegy(menu));
-    printw("menu parX = %d, begX = %d\n", getparx(menu), getbegx(menu));
-
-    refresh();
-    
-    MEVENT mouseEvnet;
-
     // deal with input config
     noecho();
     keypad(menu, true);
     mousemask(ALL_MOUSE_EVENTS, NULL);
+    MEVENT mouseEvnet;
 
     while (1)
     {
@@ -57,13 +50,14 @@ int main(int argc, char const *argv[])
                 {
                     int relativePositionY = y - winBegY;
                     int index = relativePositionY - 1;
+
                     if( index < OPTION_NUMS){
-                        mvwprintw(menu, 7, 2, "You click option [%d]", index);
+                        // mvwprintw(menu, 7, 2, "You click option [%d]", index);
                         blinkText(menu, 1 + index, 2, menuOptions[index], 3);
                     }
                 }
 
-                mvwprintw(menu, 8, 2, "You clicked at positon [%d,%d]", mouseEvnet.x, mouseEvnet.y);
+                // mvwprintw(menu, 8, 2, "You clicked at positon [%d,%d]", mouseEvnet.x, mouseEvnet.y);
                 wrefresh(menu);
             }
         }
