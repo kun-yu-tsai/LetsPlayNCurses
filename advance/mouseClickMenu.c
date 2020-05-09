@@ -1,9 +1,8 @@
 #include <ncurses.h>
-#include <unistd.h>
+#include "ncEffect.h"
+#include "ncComponent.h"
 
 #define OPTION_NUMS 3
-
-void blinkText(WINDOW* win, int y, int x, char* text, int blinkNum);
 
 int main(int argc, char const *argv[])
 {
@@ -12,27 +11,23 @@ int main(int argc, char const *argv[])
     refresh();
 
     int height = 10, width = 50;
+    char *menuOptions[OPTION_NUMS] = {"Steve Jobs", "David Bowie", "Elon Musk"};
 
-    WINDOW *menu = newwin(height, width, 5, 10);
-    box(menu, 0, 0);
-    wrefresh(menu);
+    WINDOW* menu = createMenu(
+        height,
+        width,
+        5,
+        10,
+        menuOptions,
+        OPTION_NUMS
+    );
 
     printw("menu curY = %d, maxY = %d\n", getcury(menu), getmaxy(menu));
     printw("menu parY = %d, begY = %d\n", getpary(menu), getbegy(menu));
     printw("menu parX = %d, begX = %d\n", getparx(menu), getbegx(menu));
 
     refresh();
-
-    char *menuOptions[OPTION_NUMS] = {"Steve Jobs", "David Bowie", "Elon Musk"};
-    printw("%d", sizeof(menuOptions));
-    refresh();
-
-    for (int i = 0; i < 3; i++)
-    {
-        mvwprintw(menu, 1 + i, 2, menuOptions[i]);
-    }
-
-    wrefresh(menu);
+    
     MEVENT mouseEvnet;
 
     // deal with input config
@@ -73,27 +68,7 @@ int main(int argc, char const *argv[])
             }
         }
     }
-
     endwin();
 
     return 0;
-}
-
-
-void blinkText(WINDOW* win, int y, int x, char* text, int blinkNum){
-    while(blinkNum > 0 ){
-        wattron(win, A_REVERSE);
-        wattron(win, A_BOLD);
-        mvwprintw(win, y, x, text);
-        wrefresh(win);
-        usleep(100000);
-
-        wattroff(win, A_REVERSE);
-        wattroff(win, A_BOLD);
-        mvwprintw(win, y, x, text);
-        wrefresh(win);
-        usleep(100000);
-
-        blinkNum--;
-    }
 }
