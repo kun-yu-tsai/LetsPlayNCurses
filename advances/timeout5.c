@@ -5,10 +5,14 @@
 #define TEXT_Y_OFFSET_IN_WINDOW 1
 #define TEXT_X_OFFSET_IN_WINDOW 2
 
-const char textGraph[2][20] = {" o  \n /#\\  \n _|_ ", "\\o/ \n  #  \n_/ \\_ "};
+char *textGraph[] = {"  o  \n /#\\  \n _|_ ", " \\o/ \n  #  \n_/ \\_ "};
 int count = 0;
 
 void renderStartMenu();
+void animateWindow(
+    WINDOW* win,
+    char *textArray[],
+    int index);
 
 int main(int argc, char const *argv[])
 {
@@ -24,10 +28,34 @@ int main(int argc, char const *argv[])
     return 0;
 }
 
+void animateWindow(
+    WINDOW* win,
+    char *textArray[],
+    int index)
+{
+    wclear(win);
+    wrefresh(win);
+
+    // move win
+    int winY = getbegy(win);
+    int winX = getbegx(win);
+    winX++; // increment x
+    mvwin(win, winY, winX);
+
+    // redraw content on the new-positioned window
+    mvwprintw(win, 0, 0, textArray[index]);
+    wrefresh(win);
+}
+
 void renderStartMenu()
 {
     WINDOW *menu = newwin(6, 50, 10, 10);
     box(menu, 0, 0);
+
+    int winY = 1;
+    int winX = 0;
+    WINDOW *animWin = newwin(5, 20, winY, winX);
+    int index = 0;
 
     keypad(menu, true);
 
@@ -62,14 +90,19 @@ void renderStartMenu()
 
         wrefresh(menu);
         int userInput = ERR;
-        wtimeout(menu, 150);
+        wtimeout(menu, 300);
+
+        int graphX = 1;
 
         while (userInput == ERR)
         {
-            mvprintw(1, 1, textGraph[count]);
-            count = (count + 1) % 2;
+            animateWindow(
+                animWin,
+                textGraph,
+                index
+            );
 
-            refresh();
+            index = (index + 1 ) %2;
             userInput = wgetch(menu);
         }
 

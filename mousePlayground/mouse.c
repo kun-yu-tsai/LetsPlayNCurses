@@ -25,24 +25,51 @@ int main(int argc, char const *argv[])
     {
         int ch = getch(); // now we can get mouse event by getch
 
-        MEVENT mouseEvent;
+        if( ch == KEY_MOUSE){
+            MEVENT mouseEvent;
+            int ret = getmouse(&mouseEvent); // system will write the mouse event into that varaible.
+            // see if the ret is success.
+            if( ret == OK /* 0 */){
 
-        if (ch == KEY_MOUSE)
-        {
-            int ret = getmouse(&mouseEvent);
-            if (ret == OK)
-            {
-                if (mouseEvent.bstate & BUTTON1_CLICKED)
-                {
-                    printw("Mouse left click on x = %d, y = %d\n", mouseEvent.x, mouseEvent.y);
-                    refresh();
+                if(mouseEvent.bstate & BUTTON1_DOUBLE_CLICKED){
+                    printw("You double clicked mouse x = %d, y = %d \n", mouseEvent.x, mouseEvent.y);
+                }else if(mouseEvent.bstate & BUTTON1_TRIPLE_CLICKED){
+                    printw("You triple click mouse x = %d, y = %d \n", mouseEvent.x, mouseEvent.y);
+                }else if(mouseEvent.bstate & BUTTON1_CLICKED){
+                    printw("You click mouse x = %d, y = %d \n", mouseEvent.x, mouseEvent.y);
+                }else if(mouseEvent.bstate & BUTTON1_PRESSED){
+                    printw("You pressed mouse x = %d, y = %d \n", mouseEvent.x, mouseEvent.y);
+                }else{
+                    printw("Damn You. \n");
                 }
             }
-            // else
-            // {
-            //     printw("Mouse catch failed");
-            // }
         }
+
+
+
+
+
+
+
+        // MEVENT mouseEvent;
+        // printw("Catch [%c], [%d]\n", ch, ch);
+
+        // if (ch == KEY_MOUSE)
+        // {
+        //     int ret = getmouse(&mouseEvent);
+        //     if (ret == OK)
+        //     {
+        //         if (mouseEvent.bstate & BUTTON1_CLICKED)
+        //         {
+        //             printw("Mouse left click on x = %d, y = %d\n", mouseEvent.x, mouseEvent.y);
+        //             refresh();
+        //         }
+        //     }
+        //     // else
+        //     // {
+        //     //     printw("Mouse catch failed");
+        //     // }
+        // }
         // else
         // {
         //     printw("Catch [%c], [%d]\n", ch, ch);

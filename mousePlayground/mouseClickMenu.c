@@ -8,6 +8,7 @@ int main(int argc, char const *argv[])
 {
     initscr();
     curs_set(0);
+    
     refresh();
 
     int height = 10, width = 50;
@@ -24,7 +25,9 @@ int main(int argc, char const *argv[])
 
     // deal with input config
     noecho();
+
     keypad(menu, true);
+
     mousemask(ALL_MOUSE_EVENTS, NULL);
     MEVENT mouseEvnet;
 
@@ -36,6 +39,7 @@ int main(int argc, char const *argv[])
             getmouse(&mouseEvnet);
             if (mouseEvnet.bstate & BUTTON1_CLICKED)
             {
+                // to detect whether mouseEvent happened inside the window
                 int winBegY = getbegy(menu);
                 int winMaxY = getmaxy(menu);
 
@@ -52,12 +56,12 @@ int main(int argc, char const *argv[])
                     int index = relativePositionY - 1;
 
                     if( index < OPTION_NUMS){
-                        // mvwprintw(menu, 7, 2, "You click option [%d]", index);
-                        blinkText(menu, 1 + index, 2, menuOptions[index], 3);
+                        mvwprintw(menu, 7, 2, "You click option [%d]", index);
+                        blinkText(menu, 1 + index, 2, menuOptions[index], 6);
                     }
                 }
 
-                // mvwprintw(menu, 8, 2, "You clicked at positon [%d,%d]", mouseEvnet.x, mouseEvnet.y);
+                mvwprintw(menu, 8, 2, "You clicked at positon [%d,%d]", mouseEvnet.x, mouseEvnet.y);
                 wrefresh(menu);
             }
         }
